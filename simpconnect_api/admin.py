@@ -5,10 +5,21 @@ from simpconnect_api.models import CustomUser
 
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ("id", "email", "first_name", "last_name", "gender", "profile_picture")
+    list_display = (
+        "id",
+        "email",
+        "username",
+        "first_name",
+        "last_name",
+        "gender",
+        "profile_picture",
+    )
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Personal Info", {"fields": ("first_name", "last_name", "gender", "profile_picture")}),
+        (
+            "Personal Info",
+            {"fields": ("first_name", "last_name", "gender", "profile_picture")},
+        ),
         (
             "Permissions",
             {
