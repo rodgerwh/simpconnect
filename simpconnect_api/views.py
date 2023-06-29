@@ -9,6 +9,7 @@ from django.core.mail import send_mail
 
 from .models import CustomUser
 from .serializers import CustomUserSerializer
+from .filters import CustomUserFilter
 
 User = get_user_model()
 
@@ -26,6 +27,20 @@ class UserCreateView(generics.CreateAPIView):
         user = serializer.instance
         token, created = Token.objects.get_or_create(user=user)
         return Response({"token": token.key}, status=status.HTTP_201_CREATED)
+
+
+class UserListView(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    filterset_class = CustomUserFilter
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        filtered_queryset = filterset.qs
+
+        return filtered_queryset
 
 
 class UserMatchView(APIView):
