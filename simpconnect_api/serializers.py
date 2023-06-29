@@ -16,6 +16,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
             "password",
             "first_name",
             "last_name",
+            "latitude",
+            "longitude",
             "gender",
             "profile_picture",
         )

@@ -37,7 +37,9 @@ class UserListView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        filterset = self.filterset_class(
+            request=self.request, data=self.request.GET, queryset=queryset
+        )
         filtered_queryset = filterset.qs
 
         return filtered_queryset

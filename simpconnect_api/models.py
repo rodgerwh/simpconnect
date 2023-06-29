@@ -15,12 +15,20 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default="UNKNOWN")
+    gender = models.CharField(
+        max_length=10, choices=GENDER_CHOICES, default="UNKNOWN"
+    )
     profile_picture = models.ImageField(
         default="profile_pics/default_userpic.png", upload_to="profile_pics/"
     )
     liked_users = models.ManyToManyField(
         "self", blank=True, symmetrical=False, related_name="liked_by"
+    )
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, blank=True
+    )
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, blank=True
     )
 
     def save(self, *args, **kwargs):
