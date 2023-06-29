@@ -19,18 +19,27 @@ class CustomUser(AbstractUser):
     profile_picture = models.ImageField(
         default="profile_pics/default_userpic.png", upload_to="profile_pics/"
     )
+    liked_users = models.ManyToManyField(
+        "self", blank=True, symmetrical=False, related_name="liked_by"
+    )
 
     def save(self, *args, **kwargs):
         self.username = self.email
         super().save(*args, **kwargs)
 
-        if self.profile_picture and Path(self.profile_picture.name).name != "default_userpic.png":
+        if (
+            self.profile_picture
+            and Path(self.profile_picture.name).name != "default_userpic.png"
+        ):
             watermark_path = "media/watermark.png"
             image = Image.open(self.profile_picture.path)
             watermark = Image.open(watermark_path)
 
             width, height = image.size
-            watermark_pos = ((width - watermark.width) // 2, (height - watermark.height) // 2)
+            watermark_pos = (
+                (width - watermark.width) // 2,
+                (height - watermark.height) // 2,
+            )
 
             image.paste(watermark, watermark_pos, mask=watermark)
             image.save(self.profile_picture.path)
