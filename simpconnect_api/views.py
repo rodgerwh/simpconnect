@@ -53,7 +53,8 @@ class UserMatchView(APIView):
             liked_user = User.objects.get(id=id)
         except User.DoesNotExist:
             return Response(
-                {"error": "Liked user not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "Liked user not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
 
         user = request.user
@@ -84,8 +85,11 @@ class UserMatchView(APIView):
                 [user.email],
             )
 
-            return Response({"match": liked_user.email}, status=status.HTTP_200_OK)
+            return Response(
+                {"match": liked_user.email}, status=status.HTTP_200_OK
+            )
 
         return Response(
-            {"success": "User liked successfully"}, status=status.HTTP_201_CREATED
+            {"success": "User liked successfully"},
+            status=status.HTTP_201_CREATED,
         )
